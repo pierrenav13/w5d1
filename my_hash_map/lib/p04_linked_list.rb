@@ -50,10 +50,16 @@ class LinkedList
   end
 
   def get(key)
-    self[key].val
+    self.each do |node|
+      return node.val if node.key == key
+    end
   end
 
   def include?(key)
+    self.each do |node|
+      return true if node.key == key
+    end
+    false
   end
 
   def append(key, val)
@@ -67,21 +73,29 @@ class LinkedList
   end
 
   def update(key, val)
-    self[key].val = val
+    find_node(key).val = val unless get(key) == nil
   end
 
   def remove(key)
+    current_node = find_node(key)
+    prev_node = current_node.prev
+    next_node = current_node.next
+    prev_node.next, next_node.prev = next_node, prev_node
+  end
+
+  def find_node(key)
+    self.each do |node|
+      return node if node.key == key
+    end
   end
 
   def each
-    vals = []
-    i = nil
-    i = @head.next unless @head.next == @tail
-    until i == nil
-      vals << i.val
-      i = i.next
+    i = @head.next
+    until i.val == nil
+      yield i
+      j = i.next
+      i = j
     end
-    vals
   end
 
   # uncomment when you have `each` working and `Enumerable` included
