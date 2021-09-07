@@ -4,11 +4,13 @@ end
 
 class Array
   def hash
+    self.join('').to_i.hash
   end
 end
 
 class String
   def hash
+    self.split('').hash
   end
 end
 
